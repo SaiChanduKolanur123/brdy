@@ -21,22 +21,22 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
     #balloons, #crackers, #main { display: none; }
-    .balloon {
-      position: absolute; bottom: -100px;
+    .heartBalloon {
+      position: absolute;
       width: 80px; height: 80px;
       background: red;
-      clip-path: polygon(50% 0%, 61% 19%, 82% 19%, 100% 38%, 100% 62%, 82% 81%, 61% 81%, 50% 100%, 39% 81%, 18% 81%, 0% 62%, 0% 38%, 18% 19%, 39% 19%);
-      animation: rise 4s ease-out forwards;
+      clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
+      animation: rise 5s ease-out forwards;
     }
     @keyframes rise {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-120vh); opacity: 0; }
+      0% { transform: translateY(100vh) scale(1); opacity: 1; }
+      100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
     }
-    .heart {
+    .tinyHeart {
       position: absolute;
       width: 10px; height: 10px;
       background: red;
-      clip-path: polygon(50% 0%, 61% 19%, 82% 19%, 100% 38%, 100% 62%, 82% 81%, 61% 81%, 50% 100%, 39% 81%, 18% 81%, 0% 62%, 0% 38%, 18% 19%, 39% 19%);
+      clip-path: path("M12 4C6 -2 0 4 0 10c0 6 12 14 12 14s12-8 12-14C24 4 18 -2 12 4z");
       animation: fall 3s linear forwards;
     }
     @keyframes fall {
@@ -56,15 +56,14 @@
     }
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center center;
+      background: url('brdy.jpeg') no-repeat top center;
       background-size: cover;
       position: relative;
     }
     #overlay {
       background: rgba(0,0,0,0.3);
       position: absolute; bottom: 5%; left: 5%;
-      width: 90%; 
-      text-align: center;
+      width: 90%; text-align: center;
     }
     #overlay p {
       font-size: 1.2em; line-height: 1.6em;
@@ -92,7 +91,7 @@
   </div>
 
   <!-- Background music -->
-  <audio id="bgm" src="bgm.mp3" autoplay loop></audio>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
 
   <!-- Sound effects -->
   <audio id="popSound" src="pop.mp3"></audio>
@@ -103,21 +102,28 @@
       document.documentElement.requestFullscreen?.();
       document.getElementById('tapMessage').style.display = 'none';
 
+      // Play background music at high volume
+      const bgm = document.getElementById('bgm');
+      bgm.volume = 1.0; // max volume
+      bgm.play();
+
       const balloonContainer = document.getElementById('balloons');
       balloonContainer.style.display = 'block';
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 40; i++) {
         const b = document.createElement('div');
-        b.className = 'balloon';
+        b.className = 'heartBalloon';
         b.style.left = Math.random() * 100 + 'vw';
         b.style.animationDelay = (Math.random() * 2) + 's';
         balloonContainer.appendChild(b);
 
         // hearts + sound when balloon pops
         setTimeout(() => {
-          document.getElementById('popSound').play();
+          const pop = document.getElementById('popSound');
+          pop.volume = 1.0;
+          pop.play();
           for (let j = 0; j < 50; j++) {
             const h = document.createElement('div');
-            h.className = 'heart';
+            h.className = 'tinyHeart';
             h.style.left = (Math.random() * 100) + 'vw';
             h.style.top = (Math.random() * 100) + 'vh';
             balloonContainer.appendChild(h);
@@ -135,7 +141,9 @@
         c.style.animationDelay = (Math.random() * 2) + 's';
         crackerContainer.appendChild(c);
         setTimeout(() => {
-          document.getElementById('crackerSound').play();
+          const crack = document.getElementById('crackerSound');
+          crack.volume = 1.0;
+          crack.play();
         }, 1000);
       }
 
