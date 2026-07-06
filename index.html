@@ -6,75 +6,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
       background: black;
       overflow: hidden;
+      display: flex; justify-content: center; align-items: center;
+      color: white; font-family: 'Georgia', serif;
     }
-    #balloons, #crackers {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 2;
+    #tapMessage {
+      font-size: 1.5em;
+      text-align: center;
+      animation: blink 1s infinite;
     }
+    @keyframes blink { 50% { opacity: 0; } }
+    #balloons, #crackers, #main { display: none; }
     .balloon {
-      position: absolute;
-      bottom: -100px;
-      width: 40px; height: 60px;
+      position: absolute; bottom: -100px;
+      width: 60px; height: 90px;
       background: red;
       border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
       animation: rise 4s ease-out forwards;
     }
     @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
     }
     .cracker {
       position: absolute;
-      width: 4px; height: 4px;
+      width: 6px; height: 6px;
       background: yellow;
       border-radius: 50%;
       animation: burst 1s ease-out forwards;
     }
     @keyframes burst {
       0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(5); opacity: 0; }
+      100% { transform: scale(6); opacity: 0; }
     }
     #main {
-      display: none;
       height: 100vh; width: 100vw;
-      background: url('myphoto.jpg') no-repeat center center;
+      background: url('brdy.jpeg') no-repeat center center;
       background-size: cover;
       position: relative;
-      z-index: 1;
-      color: white;
-      text-align: center;
     }
     #overlay {
       background: rgba(0,0,0,0.4);
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: center;
       padding: 20px;
     }
     #overlay p {
-      font-size: 1.2em;
-      line-height: 1.6em;
+      font-size: 1.1em; line-height: 1.5em;
       animation: fadeInText 3s ease-in forwards;
       opacity: 0;
+      max-width: 90%;
     }
-    @keyframes fadeInText {
-      to { opacity: 1; }
-    }
+    @keyframes fadeInText { to { opacity: 1; } }
     iframe { display: none; }
   </style>
 </head>
-<body>
+<body onclick="startShow()">
+  <div id="tapMessage">👉 Please tap to start 👈</div>
   <div id="balloons"></div>
   <div id="crackers"></div>
 
@@ -96,41 +88,48 @@
   </iframe>
 
   <script>
-    // Request fullscreen on load
-    document.documentElement.requestFullscreen?.();
+    function startShow() {
+      // Enter fullscreen after tap
+      document.documentElement.requestFullscreen?.();
 
-    // Balloons
-    const balloonContainer = document.getElementById('balloons');
-    for (let i = 0; i < 24; i++) {
-      const b = document.createElement('div');
-      b.className = 'balloon';
-      b.style.left = Math.random() * 100 + 'vw';
-      b.style.animationDelay = (Math.random() * 2) + 's';
-      balloonContainer.appendChild(b);
+      // Hide tap message
+      document.getElementById('tapMessage').style.display = 'none';
+
+      // Show balloons
+      const balloonContainer = document.getElementById('balloons');
+      balloonContainer.style.display = 'block';
+      for (let i = 0; i < 24; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDelay = (Math.random() * 2) + 's';
+        balloonContainer.appendChild(b);
+      }
+
+      // Show crackers
+      const crackerContainer = document.getElementById('crackers');
+      crackerContainer.style.display = 'block';
+      for (let i = 0; i < 24; i++) {
+        const c = document.createElement('div');
+        c.className = 'cracker';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.top = Math.random() * 100 + 'vh';
+        c.style.animationDelay = (Math.random() * 2) + 's';
+        crackerContainer.appendChild(c);
+      }
+
+      // After 5s, show main content
+      setTimeout(() => {
+        balloonContainer.innerHTML = '';
+        crackerContainer.innerHTML = '';
+        document.getElementById('main').style.display = 'block';
+      }, 5000);
+
+      // After 20s, exit fullscreen
+      setTimeout(() => {
+        document.exitFullscreen?.();
+      }, 20000);
     }
-
-    // Crackers
-    const crackerContainer = document.getElementById('crackers');
-    for (let i = 0; i < 24; i++) {
-      const c = document.createElement('div');
-      c.className = 'cracker';
-      c.style.left = Math.random() * 100 + 'vw';
-      c.style.top = Math.random() * 100 + 'vh';
-      c.style.animationDelay = (Math.random() * 2) + 's';
-      crackerContainer.appendChild(c);
-    }
-
-    // After 5s, show main content
-    setTimeout(() => {
-      balloonContainer.innerHTML = '';
-      crackerContainer.innerHTML = '';
-      document.getElementById('main').style.display = 'block';
-    }, 5000);
-
-    // After 20s, exit fullscreen
-    setTimeout(() => {
-      document.exitFullscreen?.();
-    }, 20000);
   </script>
 </body>
 </html>
