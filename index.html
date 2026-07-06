@@ -147,7 +147,6 @@
       balloonContainer.style.display = 'block';
       crackerContainer.style.display = 'block';
 
-      // 24 balloons with pop sounds - last at 10.75s
       for (let i = 0; i < 24; i++) {
         const b = document.createElement('div');
         b.className = 'heartBalloon';
@@ -161,7 +160,6 @@
         }
       }
 
-      // 12 crackers with sounds - last at 10.8s
       for (let i = 0; i < 12; i++) {
         const c = document.createElement('div');
         c.className = 'cracker';
@@ -172,14 +170,12 @@
         setTimeout(() => playClone('crackerSound'), i * 360);
       }
 
-      // 8s → birthday message slide
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
-      // 11s → stop sounds, show photo + bgm
       setTimeout(() => {
         soundsAllowed = false;
         document.getElementById('birthdayMsg').style.display = 'none';
@@ -189,10 +185,9 @@
         bgm.play().catch(()=>{});
       }, 11000);
 
-      // 41s → exit fullscreen
       setTimeout(() => {
         document.exitFullscreen?.();
-      }, 41000);
+      }, 61000); // was 41000, now +20s = 61s
     }
   </script>
 </body>
