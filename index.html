@@ -69,7 +69,7 @@
     
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center -280px;
+      background: url('brdy.jpeg') no-repeat center -200px; /* moved down from -480px */
       background-size: contain;
       background-color: black;
       position: relative;
@@ -117,7 +117,10 @@
   <audio id="crackerSound" src="cracker.mp3.mp3" preload="auto"></audio>
 
   <script>
+    let soundsAllowed = true;
+
     function playClone(id) {
+      if (!soundsAllowed) return;
       const original = document.getElementById(id);
       const clone = original.cloneNode(true);
       document.body.appendChild(clone);
@@ -165,6 +168,7 @@
       }, 8000);
 
       setTimeout(() => {
+        soundsAllowed = false;
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         const bgm = document.getElementById('bgm');
