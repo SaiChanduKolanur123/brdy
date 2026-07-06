@@ -69,7 +69,7 @@
     
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center -480px; /* photo much higher */
+      background: url('brdy.jpeg') no-repeat center -280px;
       background-size: contain;
       background-color: black;
       position: relative;
@@ -113,14 +113,17 @@
   </div>
 
   <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
-  <audio id="popSound" src="pop.mp3" preload="auto"></audio>
-  <audio id="crackerSound" src="cracker.mp3" preload="auto"></audio>
+  <audio id="popSound" src="pop.mp3.mp3" preload="auto"></audio>
+  <audio id="crackerSound" src="cracker.mp3.mp3" preload="auto"></audio>
 
   <script>
-    function playSound(id) {
-      const audio = document.getElementById(id);
-      audio.currentTime = 0;
-      audio.play().catch(e => console.log("Audio error:", e));
+    function playClone(id) {
+      const original = document.getElementById(id);
+      const clone = original.cloneNode(true);
+      document.body.appendChild(clone);
+      clone.currentTime = 0;
+      clone.play().catch(()=>{});
+      clone.onended = () => clone.remove();
     }
 
     function startShow() {
@@ -132,7 +135,6 @@
       balloonContainer.style.display = 'block';
       crackerContainer.style.display = 'block';
 
-      // 24 balloons with pop sounds - play for 8 seconds
       for (let i = 0; i < 24; i++) {
         const b = document.createElement('div');
         b.className = 'heartBalloon';
@@ -142,11 +144,10 @@
         balloonContainer.appendChild(b);
 
         if (i % 2 === 0) {
-          setTimeout(() => playSound('popSound'), i * 250);
+          setTimeout(() => playClone('popSound'), i * 250);
         }
       }
 
-      // 12 crackers with sounds - play for 8 seconds
       for (let i = 0; i < 12; i++) {
         const c = document.createElement('div');
         c.className = 'cracker';
@@ -154,17 +155,15 @@
         c.style.top = Math.random() * 100 + 'vh';
         crackerContainer.appendChild(c);
 
-        setTimeout(() => playSound('crackerSound'), i * 400);
+        setTimeout(() => playClone('crackerSound'), i * 400);
       }
 
-      // After 8s → stop effects, show birthday message for 3s
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
-      // After 11s → hide message, show photo + bgm for 30s
       setTimeout(() => {
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
@@ -173,7 +172,6 @@
         bgm.play().catch(()=>{});
       }, 11000);
 
-      // After 41s → exit fullscreen. 11s + 30s = 41s
       setTimeout(() => {
         document.exitFullscreen?.();
       }, 41000);
