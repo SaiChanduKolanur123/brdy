@@ -10,31 +10,43 @@
       height: 100%; width: 100%;
       background: black;
       overflow: hidden;
-      display: flex; justify-content: center; align-items: center;
-      color: white; font-family: 'Georgia', serif;
+      font-family: 'Cursive', 'Georgia', serif;
+      color: white;
     }
     #tapMessage {
-      font-size: 1.5em;
+      font-size: 1.6em;
       text-align: center;
       animation: blink 1s infinite;
+      position: absolute; top: 40%; width: 100%;
     }
     @keyframes blink { 50% { opacity: 0; } }
     #balloons, #crackers, #main { display: none; }
     .balloon {
       position: absolute; bottom: -100px;
-      width: 60px; height: 90px;
+      width: 80px; height: 80px;
       background: red;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      clip-path: polygon(50% 0%, 61% 19%, 82% 19%, 100% 38%, 100% 62%, 82% 81%, 61% 81%, 50% 100%, 39% 81%, 18% 81%, 0% 62%, 0% 38%, 18% 19%, 39% 19%);
       animation: rise 4s ease-out forwards;
     }
     @keyframes rise {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-120vh); opacity: 0; }
     }
+    .heart {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: red;
+      clip-path: polygon(50% 0%, 61% 19%, 82% 19%, 100% 38%, 100% 62%, 82% 81%, 61% 81%, 50% 100%, 39% 81%, 18% 81%, 0% 62%, 0% 38%, 18% 19%, 39% 19%);
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
     .cracker {
       position: absolute;
       width: 6px; height: 6px;
-      background: yellow;
+      background: gold;
       border-radius: 50%;
       animation: burst 1s ease-out forwards;
     }
@@ -49,24 +61,22 @@
       position: relative;
     }
     #overlay {
-      background: rgba(0,0,0,0.4);
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex; justify-content: center; align-items: center;
-      padding: 20px;
+      background: rgba(0,0,0,0.3);
+      position: absolute; bottom: 5%; left: 5%;
+      width: 90%; 
+      text-align: center;
     }
     #overlay p {
-      font-size: 1.1em; line-height: 1.5em;
+      font-size: 1.2em; line-height: 1.6em;
       animation: fadeInText 3s ease-in forwards;
       opacity: 0;
       max-width: 90%;
     }
     @keyframes fadeInText { to { opacity: 1; } }
-    iframe { display: none; }
   </style>
 </head>
 <body onclick="startShow()">
-  <div id="tapMessage">👉 Please tap to start 👈</div>
+  <div id="tapMessage">Beloved princess, let your gentle touch awaken the night—one tap my lady</div>
   <div id="balloons"></div>
   <div id="crackers"></div>
 
@@ -82,20 +92,17 @@
   </div>
 
   <!-- Background music -->
-  <iframe id="bgm" width="0" height="0" 
-    src="https://www.youtube.com/embed/XfKSsUHyC3w?autoplay=1&loop=1&playlist=XfKSsUHyC3w&mute=1" 
-    frameborder="0" allow="autoplay">
-  </iframe>
+  <audio id="bgm" src="bgm.mp3" autoplay loop></audio>
+
+  <!-- Sound effects -->
+  <audio id="popSound" src="pop.mp3"></audio>
+  <audio id="crackerSound" src="cracker.mp3"></audio>
 
   <script>
     function startShow() {
-      // Enter fullscreen after tap
       document.documentElement.requestFullscreen?.();
-
-      // Hide tap message
       document.getElementById('tapMessage').style.display = 'none';
 
-      // Show balloons
       const balloonContainer = document.getElementById('balloons');
       balloonContainer.style.display = 'block';
       for (let i = 0; i < 24; i++) {
@@ -104,9 +111,20 @@
         b.style.left = Math.random() * 100 + 'vw';
         b.style.animationDelay = (Math.random() * 2) + 's';
         balloonContainer.appendChild(b);
+
+        // hearts + sound when balloon pops
+        setTimeout(() => {
+          document.getElementById('popSound').play();
+          for (let j = 0; j < 50; j++) {
+            const h = document.createElement('div');
+            h.className = 'heart';
+            h.style.left = (Math.random() * 100) + 'vw';
+            h.style.top = (Math.random() * 100) + 'vh';
+            balloonContainer.appendChild(h);
+          }
+        }, 4000);
       }
 
-      // Show crackers
       const crackerContainer = document.getElementById('crackers');
       crackerContainer.style.display = 'block';
       for (let i = 0; i < 24; i++) {
@@ -116,6 +134,9 @@
         c.style.top = Math.random() * 100 + 'vh';
         c.style.animationDelay = (Math.random() * 2) + 's';
         crackerContainer.appendChild(c);
+        setTimeout(() => {
+          document.getElementById('crackerSound').play();
+        }, 1000);
       }
 
       // After 5s, show main content
