@@ -23,10 +23,10 @@
     #balloons, #crackers, #main, #birthdayMsg { display: none; }
     .heartBalloon {
       position: absolute;
-      width: 100px; height: 100px;
+      width: 120px; height: 120px;
       background: red;
       clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
-      animation: rise 4s ease-out forwards;
+      animation: rise 6s ease-out forwards;
     }
     @keyframes rise {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
@@ -34,29 +34,27 @@
     }
     .cracker {
       position: absolute;
-      width: 14px; height: 14px;
+      width: 20px; height: 20px;
       background: gold;
       border-radius: 50%;
-      animation: burst 1.5s ease-out forwards;
+      animation: burst 2s ease-out forwards;
     }
     @keyframes burst {
       0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(10); opacity: 0; }
+      100% { transform: scale(12); opacity: 0; }
     }
     #birthdayMsg {
-      font-size: 2em;
+      font-size: 2.5em;
       text-align: center;
+      color: black; /* black font */
       position: absolute; top: 40%; width: 100%;
       animation: fadeInText 2s ease-in forwards;
-    }
-    #birthdayMsg span {
-      color: red; font-size: 2.5em;
     }
     #main {
       height: 100vh; width: 100vw;
       background: url('brdy.jpeg') no-repeat top center;
       background-size: cover;
-      background-position-y: -60px; /* move photo up more */
+      background-position-y: -200px; /* move photo up more */
       position: relative;
     }
     #overlay {
@@ -81,7 +79,7 @@
   <div id="tapMessage">Beloved princess, let your gentle touch awaken the night—one tap my lady</div>
   <div id="balloons"></div>
   <div id="crackers"></div>
-  <div id="birthdayMsg">Happy Birthday my love <span>💋</span> blowing kisses</div>
+  <div id="birthdayMsg">Happy Birthday my love 💋 blowing kisses</div>
 
   <div id="main">
     <div id="overlay">
@@ -116,7 +114,17 @@
         const b = document.createElement('div');
         b.className = 'heartBalloon';
         b.style.left = Math.random() * 100 + 'vw';
+        b.style.top = Math.random() * 100 + 'vh';
         balloonContainer.appendChild(b);
+
+        // pop sound every 2 balloons
+        if (i % 2 === 0) {
+          setTimeout(() => {
+            const pop = document.getElementById('popSound');
+            pop.currentTime = 0;
+            pop.play();
+          }, i * 250);
+        }
       }
 
       // 12 crackers
@@ -126,51 +134,50 @@
         c.style.left = Math.random() * 100 + 'vw';
         c.style.top = Math.random() * 100 + 'vh';
         crackerContainer.appendChild(c);
+
+        setTimeout(() => {
+          const crack = document.getElementById('crackerSound');
+          crack.currentTime = 0;
+          crack.play();
+        }, i * 400);
       }
 
-      // Play sounds together
-      setTimeout(() => {
-        const pop = document.getElementById('popSound');
-        const crack = document.getElementById('crackerSound');
-        pop.volume = 1.0; crack.volume = 1.0;
-        pop.play(); crack.play();
-      }, 1500);
-
-      // After 5s → show birthday message + lips
+      // After 8s → show birthday message + lips background
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         const msg = document.getElementById('birthdayMsg');
         msg.style.display = 'block';
 
-        // spawn ~1000 💋 emojis
+        // spawn ~1000 💋 emojis full screen
         for (let i = 0; i < 1000; i++) {
           const lip = document.createElement('div');
           lip.textContent = '💋';
           lip.style.position = 'absolute';
           lip.style.left = Math.random() * 100 + 'vw';
           lip.style.top = Math.random() * 100 + 'vh';
-          lip.style.fontSize = (Math.random() * 20 + 10) + 'px';
+          lip.style.fontSize = (Math.random() * 25 + 15) + 'px';
+          lip.style.color = 'red';
           lip.style.opacity = Math.random();
           lip.style.animation = `floatUp ${2 + Math.random()}s ease-out forwards`;
           document.body.appendChild(lip);
-          setTimeout(() => lip.remove(), 2000);
+          setTimeout(() => lip.remove(), 5000);
         }
-      }, 5000);
+      }, 8000);
 
-      // After 7s → hide message, show photo + bgm for 4s
+      // After 13s → hide message, show photo + bgm for 10s
       setTimeout(() => {
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         const bgm = document.getElementById('bgm');
         bgm.volume = 1.0;
         bgm.play();
-      }, 7000);
+      }, 13000);
 
-      // After 11s → exit fullscreen (photo shown for 4s)
+      // After 23s → exit fullscreen
       setTimeout(() => {
         document.exitFullscreen?.();
-      }, 11000);
+      }, 23000);
     }
   </script>
 </body>
