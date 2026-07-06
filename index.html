@@ -44,9 +44,10 @@
       100% { transform: scale(12); opacity: 0; }
     }
     #birthdayMsg {
-      font-size: 2.5em;
+      font-size: 3em;
       text-align: center;
-      color: black; /* black font */
+      color: #ff0066; /* stylish pink/red font */
+      font-family: 'Brush Script MT', cursive;
       position: absolute; top: 40%; width: 100%;
       animation: fadeInText 2s ease-in forwards;
     }
@@ -69,17 +70,13 @@
       max-width: 90%;
     }
     @keyframes fadeInText { to { opacity: 1; } }
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-50vh) scale(1.5); opacity: 0; }
-    }
   </style>
 </head>
 <body onclick="startShow()">
   <div id="tapMessage">Beloved princess, let your gentle touch awaken the night—one tap my lady</div>
   <div id="balloons"></div>
   <div id="crackers"></div>
-  <div id="birthdayMsg">Happy Birthday my love 💋 blowing kisses</div>
+  <div id="birthdayMsg">Happy Birthday my love</div>
 
   <div id="main">
     <div id="overlay">
@@ -142,42 +139,27 @@
         }, i * 400);
       }
 
-      // After 8s → show birthday message + lips background
+      // After 8s → show birthday message for 3s
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         const msg = document.getElementById('birthdayMsg');
         msg.style.display = 'block';
-
-        // spawn ~1000 💋 emojis full screen
-        for (let i = 0; i < 1000; i++) {
-          const lip = document.createElement('div');
-          lip.textContent = '💋';
-          lip.style.position = 'absolute';
-          lip.style.left = Math.random() * 100 + 'vw';
-          lip.style.top = Math.random() * 100 + 'vh';
-          lip.style.fontSize = (Math.random() * 25 + 15) + 'px';
-          lip.style.color = 'red';
-          lip.style.opacity = Math.random();
-          lip.style.animation = `floatUp ${2 + Math.random()}s ease-out forwards`;
-          document.body.appendChild(lip);
-          setTimeout(() => lip.remove(), 5000);
-        }
       }, 8000);
 
-      // After 13s → hide message, show photo + bgm for 10s
+      // After 11s → hide message, show photo + bgm for 10s
       setTimeout(() => {
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         const bgm = document.getElementById('bgm');
         bgm.volume = 1.0;
         bgm.play();
-      }, 13000);
+      }, 11000);
 
-      // After 23s → exit fullscreen
+      // After 21s → exit fullscreen
       setTimeout(() => {
         document.exitFullscreen?.();
-      }, 23000);
+      }, 21000);
     }
   </script>
 </body>
