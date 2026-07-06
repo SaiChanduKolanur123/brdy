@@ -13,6 +13,7 @@
       overflow: hidden;
       font-family: 'Georgia', serif;
       color: white;
+      touch-action: manipulation;
     }
     #tapMessage {
       font-size: 1.4em;
@@ -20,6 +21,8 @@
       animation: blink 1s infinite;
       position: absolute; top: 40%; width: 100%;
       padding: 0 10px;
+      z-index: 100;
+      pointer-events: auto;
     }
     @keyframes blink { 50% { opacity: 0; } }
     #balloons, #crackers, #main, #birthdayMsg { display: none; }
@@ -29,6 +32,7 @@
       width: 100px; height: 100px;
       clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
       animation: rise 6s ease-out forwards;
+      pointer-events: none;
     }
     @keyframes rise {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
@@ -40,6 +44,7 @@
       background: gold;
       border-radius: 50%;
       animation: burst 2s ease-out forwards;
+      pointer-events: none;
     }
     @keyframes burst {
       0% { transform: scale(0); opacity: 1; }
@@ -69,7 +74,7 @@
     
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center -80px; /* photo down */
+      background: url('brdy.jpeg') no-repeat center -80px;
       background-size: contain;
       background-color: black;
       position: relative;
@@ -79,6 +84,7 @@
       position: absolute; bottom: 2%; left: 5%;
       width: 90%; text-align: center;
       border-radius: 12px;
+      pointer-events: none;
     }
     #overlay p {
       font-size: 0.88em;
@@ -117,27 +123,22 @@
   <audio id="crackerSound" src="cracker.mp3.mp3" preload="auto"></audio>
 
   <script>
+    let started = false;
     let soundsAllowed = true;
 
     function playClone(id) {
       if (!soundsAllowed) return;
       const original = document.getElementById(id);
-      const clone = original.cloneNode(true);
-      clone.classList.add('temp-sound');
+      const clone = original.cloneNode();
       document.body.appendChild(clone);
-      clone.currentTime = 0;
       clone.play().catch(()=>{});
-      clone.onended = () => clone.remove();
-    }
-
-    function stopAllTempSounds() {
-      document.querySelectorAll('audio.temp-sound').forEach(a => {
-        a.pause();
-        a.remove();
-      });
+      setTimeout(() => clone.remove(), 1000);
     }
 
     function startShow() {
+      if (started) return;
+      started = true;
+      
       document.documentElement.requestFullscreen?.();
       document.getElementById('tapMessage').style.display = 'none';
 
@@ -146,7 +147,7 @@
       balloonContainer.style.display = 'block';
       crackerContainer.style.display = 'block';
 
-      // 24 balloons with pop sounds - last pop at 10.75s < 11s
+      // 24 balloons with pop sounds - last at 10.75s
       for (let i = 0; i < 24; i++) {
         const b = document.createElement('div');
         b.className = 'heartBalloon';
@@ -160,7 +161,7 @@
         }
       }
 
-      // 12 crackers with sounds - last cracker at 10.8s < 11s
+      // 12 crackers with sounds - last at 10.8s
       for (let i = 0; i < 12; i++) {
         const c = document.createElement('div');
         c.className = 'cracker';
@@ -171,14 +172,28 @@
         setTimeout(() => playClone('crackerSound'), i * 360);
       }
 
-      // 8s → show birthday message slide, sounds still on
+      // 8s → birthday message slide
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
-      // 11s → HARD STOP sounds, hide message, show photo + bgm
+      // 11s → stop sounds, show photo + bgm
       setTimeout(() => {
         soundsAllowed = false;
-        stopAllTempSounds(); //
+        document.getElementById('birthdayMsg').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 1.0;
+        bgm.play().catch(()=>{});
+      }, 11000);
+
+      // 41s → exit fullscreen
+      setTimeout(() => {
+        document.exitFullscreen?.();
+      }, 41000);
+    }
+  </script>
+</body>
+</html>
