@@ -69,7 +69,7 @@
     
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center -200px; /* moved down from -480px */
+      background: url('brdy.jpeg') no-repeat center -80px; /* photo down */
       background-size: contain;
       background-color: black;
       position: relative;
@@ -123,10 +123,18 @@
       if (!soundsAllowed) return;
       const original = document.getElementById(id);
       const clone = original.cloneNode(true);
+      clone.classList.add('temp-sound');
       document.body.appendChild(clone);
       clone.currentTime = 0;
       clone.play().catch(()=>{});
       clone.onended = () => clone.remove();
+    }
+
+    function stopAllTempSounds() {
+      document.querySelectorAll('audio.temp-sound').forEach(a => {
+        a.pause();
+        a.remove();
+      });
     }
 
     function startShow() {
@@ -138,6 +146,7 @@
       balloonContainer.style.display = 'block';
       crackerContainer.style.display = 'block';
 
+      // 24 balloons with pop sounds - last pop at 10.75s < 11s
       for (let i = 0; i < 24; i++) {
         const b = document.createElement('div');
         b.className = 'heartBalloon';
@@ -147,10 +156,11 @@
         balloonContainer.appendChild(b);
 
         if (i % 2 === 0) {
-          setTimeout(() => playClone('popSound'), i * 250);
+          setTimeout(() => playClone('popSound'), i * 230);
         }
       }
 
+      // 12 crackers with sounds - last cracker at 10.8s < 11s
       for (let i = 0; i < 12; i++) {
         const c = document.createElement('div');
         c.className = 'cracker';
@@ -158,28 +168,17 @@
         c.style.top = Math.random() * 100 + 'vh';
         crackerContainer.appendChild(c);
 
-        setTimeout(() => playClone('crackerSound'), i * 400);
+        setTimeout(() => playClone('crackerSound'), i * 360);
       }
 
+      // 8s → show birthday message slide, sounds still on
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
+      // 11s → HARD STOP sounds, hide message, show photo + bgm
       setTimeout(() => {
         soundsAllowed = false;
-        document.getElementById('birthdayMsg').style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-        const bgm = document.getElementById('bgm');
-        bgm.volume = 1.0;
-        bgm.play().catch(()=>{});
-      }, 11000);
-
-      setTimeout(() => {
-        document.exitFullscreen?.();
-      }, 41000);
-    }
-  </script>
-</body>
-</html>
+        stopAllTempSounds(); //
