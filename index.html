@@ -1,179 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Birthday Wishes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0; padding: 0;
-      height: 100%; width: 100%;
-      background: black;
-      overflow: hidden;
-      font-family: 'Cursive', 'Georgia', serif;
-      color: white;
-    }
-    #tapMessage {
-      font-size: 1.6em;
-      text-align: center;
-      animation: blink 1s infinite;
-      position: absolute; top: 40%; width: 100%;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-    #balloons, #crackers, #main, #birthdayMsg { display: none; }
-    .heartBalloon {
-      position: absolute;
-      width: 80px; height: 80px;
-      background: red;
-      clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
-      animation: rise 5s ease-out forwards;
-    }
-    @keyframes rise {
-      0% { transform: translateY(100vh) scale(1); opacity: 1; }
-      100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-    }
-    .tinyHeart {
-      position: absolute;
-      width: 10px; height: 10px;
-      background: red;
-      clip-path: path("M12 4C6 -2 0 4 0 10c0 6 12 14 12 14s12-8 12-14C24 4 18 -2 12 4z");
-      animation: fall 3s linear forwards;
-    }
-    @keyframes fall {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-    .cracker {
-      position: absolute;
-      width: 6px; height: 6px;
-      background: gold;
-      border-radius: 50%;
-      animation: burst 1s ease-out forwards;
-    }
-    @keyframes burst {
-      0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(6); opacity: 0; }
-    }
-    #birthdayMsg {
-      font-size: 2em;
-      text-align: center;
-      position: absolute; top: 40%; width: 100%;
-      animation: fadeInText 2s ease-in forwards;
-    }
-    #birthdayMsg span {
-      color: red; font-size: 2.5em;
-    }
-    #main {
-      height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat top center;
-      background-size: cover;
-      position: relative;
-    }
-    #overlay {
-      background: rgba(0,0,0,0.3);
-      position: absolute; bottom: 5%; left: 5%;
-      width: 90%; text-align: center;
-    }
-    #overlay p {
-      font-size: 1.2em; line-height: 1.6em;
-      animation: fadeInText 3s ease-in forwards;
-      opacity: 0;
-      max-width: 90%;
-    }
-    @keyframes fadeInText { to { opacity: 1; } }
-  </style>
-</head>
-<body onclick="startShow()">
-  <div id="tapMessage">Beloved princess, let your gentle touch awaken the night—one tap my lady</div>
-  <div id="balloons"></div>
-  <div id="crackers"></div>
-  <div id="birthdayMsg">Happy Birthday my love <span>💋</span> blowing kisses</div>
+<!-- Background music -->
+<audio id="bgm" src="bgm.mp3" loop></audio>
 
-  <div id="main">
-    <div id="overlay">
-      <p>
-        You feel like the prayer I never spoke, fulfilled in its purest form.  
-        The finest gift existence can offer is simply you—your presence that turns time itself into meaning.  
-        With you, even thankfulness feels small, because words collapse under the truth of what you mean to me.  
-        To have you is to know that existence can be more than survival—it can be grace, wonder, and joy beyond measure.
-      </p>
-    </div>
-  </div>
+<!-- Sound effects -->
+<audio id="popSound" src="pop.mp3"></audio>
+<audio id="crackerSound" src="cracker.mp3"></audio>
 
-  <!-- Background music -->
-  <audio id="bgm" src="bgm.mp3" loop></audio>
+<script>
+function startShow() {
+  document.documentElement.requestFullscreen?.();
+  document.getElementById('tapMessage').style.display = 'none';
 
-  <!-- Sound effects -->
-  <audio id="popSound" src="pop.mp3"></audio>
-  <audio id="crackerSound" src="cracker.mp3"></audio>
+  const balloonContainer = document.getElementById('balloons');
+  const crackerContainer = document.getElementById('crackers');
+  balloonContainer.style.display = 'block';
+  crackerContainer.style.display = 'block';
 
-  <script>
-    function startShow() {
-      document.documentElement.requestFullscreen?.();
-      document.getElementById('tapMessage').style.display = 'none';
+  // Balloons + crackers together
+  for (let i = 0; i < 30; i++) {
+    const b = document.createElement('div');
+    b.className = 'heartBalloon';
+    b.style.left = Math.random() * 100 + 'vw';
+    balloonContainer.appendChild(b);
 
-      const balloonContainer = document.getElementById('balloons');
-      const crackerContainer = document.getElementById('crackers');
-      balloonContainer.style.display = 'block';
-      crackerContainer.style.display = 'block';
+    const c = document.createElement('div');
+    c.className = 'cracker';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.top = Math.random() * 100 + 'vh';
+    crackerContainer.appendChild(c);
+  }
 
-      // Balloons + crackers together
-      for (let i = 0; i < 40; i++) {
-        const b = document.createElement('div');
-        b.className = 'heartBalloon';
-        b.style.left = Math.random() * 100 + 'vw';
-        b.style.animationDelay = (Math.random() * 2) + 's';
-        balloonContainer.appendChild(b);
+  // Play sounds together
+  setTimeout(() => {
+    document.getElementById('popSound').play();
+    document.getElementById('crackerSound').play();
+  }, 2000);
 
-        setTimeout(() => {
-          const pop = document.getElementById('popSound');
-          pop.volume = 1.0;
-          pop.play();
-          for (let j = 0; j < 50; j++) {
-            const h = document.createElement('div');
-            h.className = 'tinyHeart';
-            h.style.left = (Math.random() * 100) + 'vw';
-            h.style.top = (Math.random() * 100) + 'vh';
-            balloonContainer.appendChild(h);
-          }
-        }, 3000);
-      }
+  // After 5s → show birthday message + lips
+  setTimeout(() => {
+    balloonContainer.innerHTML = '';
+    crackerContainer.innerHTML = '';
+    const msg = document.getElementById('birthdayMsg');
+    msg.style.display = 'block';
 
-      for (let i = 0; i < 24; i++) {
-        const c = document.createElement('div');
-        c.className = 'cracker';
-        c.style.left = Math.random() * 100 + 'vw';
-        c.style.top = Math.random() * 100 + 'vh';
-        c.style.animationDelay = (Math.random() * 2) + 's';
-        crackerContainer.appendChild(c);
-        setTimeout(() => {
-          const crack = document.getElementById('crackerSound');
-          crack.volume = 1.0;
-          crack.play();
-        }, 3000);
-      }
-
-      // After 5s, show birthday message
-      setTimeout(() => {
-        balloonContainer.innerHTML = '';
-        crackerContainer.innerHTML = '';
-        document.getElementById('birthdayMsg').style.display = 'block';
-      }, 5000);
-
-      // After 8s, show main content + start bgm
-      setTimeout(() => {
-        document.getElementById('birthdayMsg').style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-        const bgm = document.getElementById('bgm');
-        bgm.volume = 1.0;
-        bgm.play();
-      }, 8000);
-
-      // After 25s, exit fullscreen
-      setTimeout(() => {
-        document.exitFullscreen?.();
-      }, 25000);
+    // spawn millions of 💋 emojis
+    for (let i = 0; i < 5000; i++) {
+      const lip = document.createElement('div');
+      lip.textContent = '💋';
+      lip.style.position = 'absolute';
+      lip.style.left = Math.random() * 100 + 'vw';
+      lip.style.top = Math.random() * 100 + 'vh';
+      lip.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      lip.style.opacity = Math.random();
+      document.body.appendChild(lip);
+      setTimeout(() => lip.remove(), 2000); // remove after 2s
     }
-  </script>
-</body>
-</html>
+  }, 5000);
+
+  // After 7s → hide message, show photo + bgm
+  setTimeout(() => {
+    document.getElementById('birthdayMsg').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 1.0;
+    bgm.play();
+  }, 7000);
+}
+</script>
