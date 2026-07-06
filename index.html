@@ -53,6 +53,7 @@
       background: black;
       padding: 20px;
       animation: fadeInText 2s ease-in forwards;
+      z-index: 10;
     }
     #birthdayMsg p { margin: 0; }
     #birthdayMsg .headline {
@@ -69,31 +70,31 @@
     
     #main {
       height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat top center;
-      background-size: cover;
-      background-position-y: -200px;
+      background: url('brdy.jpeg') no-repeat center;
+      background-size: contain;
+      background-color: black;
       position: relative;
     }
     #overlay {
       background: rgba(0,0,0,0.35);
-      position: absolute; bottom: 5%; left: 5%;
+      position: absolute; bottom: 3%; left: 5%;
       width: 90%; text-align: center;
       border-radius: 12px;
     }
     #overlay p {
-      font-size: 0.95em;
+      font-size: 0.9em;
       line-height: 1.5em;
       animation: fadeInText 3s ease-in forwards;
       opacity: 0;
       max-width: 90%;
-      margin: 12px auto;
+      margin: 10px auto;
       padding: 0 8px;
     }
     @keyframes fadeInText { to { opacity: 1; } }
   </style>
 </head>
 <body onclick="startShow()">
-  <div id="tapMessage">Beloved princess, let your gentle touch awaken the night—one tap my lady</div>
+  <div id="tapMessage">Her Eternal Majesty, let your gentle touch awaken the night—one tap my lady</div>
   <div id="balloons"></div>
   <div id="crackers"></div>
   <div id="birthdayMsg">
@@ -161,13 +162,13 @@
       }
 
       setTimeout(() => {
-        soundsAllowed = false;
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
         document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
       setTimeout(() => {
+        soundsAllowed = false;
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         const bgm = document.getElementById('bgm');
@@ -177,7 +178,7 @@
 
       setTimeout(() => {
         document.exitFullscreen?.();
-      }, 21000);
+      }, 41000);
     }
   </script>
 </body>
