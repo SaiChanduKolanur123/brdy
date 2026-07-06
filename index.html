@@ -44,15 +44,17 @@
       100% { transform: scale(12); opacity: 0; }
     }
     #birthdayMsg {
-      font-size: 3em;
       text-align: center;
-      color: #ff0066; /* stylish pink/red font */
-      font-family: 'Brush Script MT', cursive;
       position: absolute; top: 35%; width: 100%;
+      background: black;
+      padding: 20px;
       animation: fadeInText 2s ease-in forwards;
     }
-    #birthdayMsg p {
-      margin: 0;
+    #birthdayMsg p { margin: 0; }
+    #birthdayMsg .headline {
+      font-size: 3em;
+      color: #ffffff;
+      font-family: 'Brush Script MT', cursive;
     }
     #birthdayMsg .subline {
       font-size: 1.5em;
@@ -86,7 +88,7 @@
   <div id="balloons"></div>
   <div id="crackers"></div>
   <div id="birthdayMsg">
-    <p>Happy Birthday my love</p>
+    <p class="headline">Happy Birthday my love</p>
     <p class="subline">Wishing you a happy, healthy, successful year ahead</p>
   </div>
 
@@ -118,7 +120,7 @@
       balloonContainer.style.display = 'block';
       crackerContainer.style.display = 'block';
 
-      // 24 balloons
+      // 24 balloons with pop sounds
       for (let i = 0; i < 24; i++) {
         const b = document.createElement('div');
         b.className = 'heartBalloon';
@@ -126,17 +128,16 @@
         b.style.top = Math.random() * 100 + 'vh';
         balloonContainer.appendChild(b);
 
-        // pop sound every 2 balloons
         if (i % 2 === 0) {
           setTimeout(() => {
             const pop = document.getElementById('popSound');
             pop.currentTime = 0;
-            pop.play();
+            pop.play().catch(()=>{});
           }, i * 250);
         }
       }
 
-      // 12 crackers
+      // 12 crackers with sounds
       for (let i = 0; i < 12; i++) {
         const c = document.createElement('div');
         c.className = 'cracker';
@@ -147,7 +148,7 @@
         setTimeout(() => {
           const crack = document.getElementById('crackerSound');
           crack.currentTime = 0;
-          crack.play();
+          crack.play().catch(()=>{});
         }, i * 400);
       }
 
@@ -155,17 +156,16 @@
       setTimeout(() => {
         balloonContainer.innerHTML = '';
         crackerContainer.innerHTML = '';
-        const msg = document.getElementById('birthdayMsg');
-        msg.style.display = 'block';
+        document.getElementById('birthdayMsg').style.display = 'block';
       }, 8000);
 
-      // After 11s → hide message, show photo + bgm for 10s
+      // After 11s → hide message, show photo + bgm
       setTimeout(() => {
         document.getElementById('birthdayMsg').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         const bgm = document.getElementById('bgm');
         bgm.volume = 1.0;
-        bgm.play();
+        bgm.play().catch(()=>{});
       }, 11000);
 
       // After 21s → exit fullscreen
