@@ -36,6 +36,7 @@ html, body {
 @keyframes blink { 50% { opacity: 0; } }
 #balloons, #crackers, #main, #birthdayMsg { display: none; }
 
+/* Balloon + Cracker from your code - unchanged */
 .heartBalloon {
   position: absolute;
   width: 96px;
@@ -44,7 +45,7 @@ html, body {
   animation: rise 6s ease-out forwards;
 }
 @keyframes rise {
-  0% { transform: translateY(100vh) scale(1); opacity: 1; }
+ 0% { transform: translateY(100vh) scale(1); opacity: 1; }
  100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
 }
 
@@ -58,7 +59,7 @@ html, body {
 }
 @keyframes burst {
   0% { transform: scale(0); opacity: 1; }
-  100% { transform: scale(12); opacity: 0; }
+ 100% { transform: scale(12); opacity: 0; }
 }
 
 #birthdayMsg {
@@ -170,8 +171,6 @@ function runShow() {
   started = true;
 
   document.getElementById('tapMessage').style.display = 'none';
-
-  // Fullscreen - Android Chrome allows this inside user gesture
   document.documentElement.requestFullscreen().catch(() => {});
 
   const B = document.getElementById('balloons');
@@ -179,7 +178,7 @@ function runShow() {
   B.style.display = 'block';
   C.style.display = 'block';
 
-  // Balloons immediately - like original
+  // Balloons - your animation logic exact
   for (let i = 0; i < 24; i++) {
     const b = document.createElement('div');
     b.className = 'heartBalloon';
@@ -190,7 +189,7 @@ function runShow() {
     if (i % 2 === 0) setTimeout(() => playSound('popSound'), i * 220);
   }
 
-  // Crackers start at 3s - like original
+  // Crackers - your animation logic exact
   for (let i = 0; i < 12; i++) {
     setTimeout(() => {
       const c = document.createElement('div');
