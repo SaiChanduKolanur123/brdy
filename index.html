@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Birthday Wishes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -13,16 +13,19 @@
       overflow: hidden;
       font-family: 'Georgia', serif;
       color: white;
-      touch-action: manipulation;
     }
     #tapMessage {
       font-size: 1.4em;
       text-align: center;
       animation: blink 1s infinite;
-      position: absolute; top: 40%; width: 100%;
-      padding: 0 10px;
-      z-index: 100;
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 20px;
+      z-index: 9999;
       cursor: pointer;
+      pointer-events: auto;
+      background: black;
     }
     @keyframes blink { 50% { opacity: 0; } }
     #balloons, #crackers, #main, #birthdayMsg { display: none; }
@@ -32,7 +35,6 @@
       width: 100px; height: 100px;
       clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
       animation: rise 6s ease-out forwards;
-      pointer-events: none;
     }
     @keyframes rise {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
@@ -44,7 +46,6 @@
       background: gold;
       border-radius: 50%;
       animation: burst 2s ease-out forwards;
-      pointer-events: none;
     }
     @keyframes burst {
       0% { transform: scale(0); opacity: 1; }
@@ -57,7 +58,6 @@
       background: black;
       padding: 20px;
       animation: fadeInText 2s ease-in forwards;
-      z-index: 10;
     }
     #birthdayMsg p { margin: 0; }
     #birthdayMsg .headline {
@@ -84,7 +84,6 @@
       position: absolute; bottom: 2%; left: 5%;
       width: 90%; text-align: center;
       border-radius: 12px;
-      pointer-events: none;
     }
     #overlay p {
       font-size: 0.88em;
@@ -118,9 +117,9 @@
     </div>
   </div>
 
-  <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
-  <audio id="popSound" src="pop.mp3.mp3" preload="auto"></audio>
-  <audio id="crackerSound" src="cracker.mp3.mp3" preload="auto"></audio>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
+  <audio id="popSound" src="pop.mp3.mp3"></audio>
+  <audio id="crackerSound" src="cracker.mp3.mp3"></audio>
 
   <script>
     let started = false;
@@ -129,7 +128,6 @@
     function playClone(id) {
       if (!soundsAllowed) return;
       const original = document.getElementById(id);
-      if (!original) return;
       const clone = original.cloneNode();
       document.body.appendChild(clone);
       clone.play().catch(()=>{});
@@ -155,7 +153,10 @@
         b.style.top = Math.random() * 100 + 'vh';
         b.style.background = ['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%4];
         balloonContainer.appendChild(b);
-        if (i % 2 === 0) setTimeout(() => playClone('popSound'), i * 230);
+
+        if (i % 2 === 0) {
+          setTimeout(() => playClone('popSound'), i * 230);
+        }
       }
 
       for (let i = 0; i < 12; i++) {
@@ -164,9 +165,32 @@
         c.style.left = Math.random() * 100 + 'vw';
         c.style.top = Math.random() * 100 + 'vh';
         crackerContainer.appendChild(c);
+
         setTimeout(() => playClone('crackerSound'), i * 360);
       }
 
       setTimeout(() => {
         balloonContainer.innerHTML = '';
-        cracker
+        crackerContainer.innerHTML = '';
+        document.getElementById('birthdayMsg').style.display = 'block';
+      }, 8000);
+
+      setTimeout(() => {
+        soundsAllowed = false;
+        document.getElementById('birthdayMsg').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 1.0;
+        bgm.play().catch(()=>{});
+      }, 11000);
+
+      setTimeout(() => {
+        document.exitFullscreen();
+      }, 61000);
+    }
+
+    document.getElementById('tapMessage').addEventListener('click', startShow, {once: true});
+    document.getElementById('tapMessage').addEventListener('touchstart', startShow, {once: true});
+  </script>
+</body>
+</html>
