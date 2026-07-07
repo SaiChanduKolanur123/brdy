@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Birthday Wishes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -22,7 +22,6 @@
       position: absolute; top: 40%; width: 100%;
       padding: 0 10px;
       z-index: 100;
-      pointer-events: auto;
       cursor: pointer;
     }
     @keyframes blink { 50% { opacity: 0; } }
@@ -130,6 +129,7 @@
     function playClone(id) {
       if (!soundsAllowed) return;
       const original = document.getElementById(id);
+      if (!original) return;
       const clone = original.cloneNode();
       document.body.appendChild(clone);
       clone.play().catch(()=>{});
@@ -140,7 +140,7 @@
       if (started) return;
       started = true;
       
-      document.documentElement.requestFullscreen?.();
+      document.documentElement.requestFullscreen().catch(()=>{});
       document.getElementById('tapMessage').style.display = 'none';
 
       const balloonContainer = document.getElementById('balloons');
@@ -155,10 +155,7 @@
         b.style.top = Math.random() * 100 + 'vh';
         b.style.background = ['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%4];
         balloonContainer.appendChild(b);
-
-        if (i % 2 === 0) {
-          setTimeout(() => playClone('popSound'), i * 230);
-        }
+        if (i % 2 === 0) setTimeout(() => playClone('popSound'), i * 230);
       }
 
       for (let i = 0; i < 12; i++) {
@@ -167,33 +164,9 @@
         c.style.left = Math.random() * 100 + 'vw';
         c.style.top = Math.random() * 100 + 'vh';
         crackerContainer.appendChild(c);
-
         setTimeout(() => playClone('crackerSound'), i * 360);
       }
 
       setTimeout(() => {
         balloonContainer.innerHTML = '';
-        crackerContainer.innerHTML = '';
-        document.getElementById('birthdayMsg').style.display = 'block';
-      }, 8000);
-
-      setTimeout(() => {
-        soundsAllowed = false;
-        document.getElementById('birthdayMsg').style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-        const bgm = document.getElementById('bgm');
-        bgm.volume = 1.0;
-        bgm.play().catch(()=>{});
-      }, 11000);
-
-      setTimeout(() => {
-        document.exitFullscreen?.();
-      }, 61000);
-    }
-
-    // Tap works on all mobile browsers now
-    document.addEventListener('click', startShow, {once: true});
-    document.addEventListener('touchstart', startShow, {once: true});
-  </script>
-</body>
-</html>
+        cracker
