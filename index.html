@@ -1,196 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Birthday Wishes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      margin: 0; padding: 0;
-      height: 100%; width: 100%;
-      background: black;
-      overflow: hidden;
-      font-family: 'Georgia', serif;
-      color: white;
-    }
-    #tapMessage {
-      font-size: 1.4em;
-      text-align: center;
-      animation: blink 1s infinite;
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      padding: 0 20px;
-      z-index: 9999;
-      cursor: pointer;
-      pointer-events: auto;
-      background: black;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-    #balloons, #crackers, #main, #birthdayMsg { display: none; }
-    
-    .heartBalloon {
-      position: absolute;
-      width: 100px; height: 100px;
-      clip-path: path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");
-      animation: rise 6s ease-out forwards;
-    }
-    @keyframes rise {
-      0% { transform: translateY(100vh) scale(1); opacity: 1; }
-      100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-    }
-    .cracker {
-      position: absolute;
-      width: 18px; height: 18px;
-      background: gold;
-      border-radius: 50%;
-      animation: burst 2s ease-out forwards;
-    }
-    @keyframes burst {
-      0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(12); opacity: 0; }
-    }
-    
-    #birthdayMsg {
-      text-align: center;
-      position: absolute; top: 35%; width: 100%;
-      background: black;
-      padding: 20px;
-      animation: fadeInText 2s ease-in forwards;
-    }
-    #birthdayMsg p { margin: 0; }
-    #birthdayMsg .headline {
-      font-size: 2.5em;
-      color: #ffffff;
-      font-family: 'Great Vibes', cursive;
-    }
-    #birthdayMsg .subline {
-      font-size: 1.2em;
-      font-family: 'Georgia', serif;
-      color: #ffffff;
-      margin-top: 8px;
-    }
-    
-    #main {
-      height: 100vh; width: 100vw;
-      background: url('brdy.jpeg') no-repeat center -80px;
-      background-size: contain;
-      background-color: black;
-      position: relative;
-    }
-    #overlay {
-      background: rgba(0,0,0,0.4);
-      position: absolute; bottom: 2%; left: 5%;
-      width: 90%; text-align: center;
-      border-radius: 12px;
-    }
-    #overlay p {
-      font-size: 0.88em;
-      line-height: 1.5em;
-      animation: fadeInText 3s ease-in forwards;
-      opacity: 0;
-      max-width: 90%;
-      margin: 10px auto;
-      padding: 0 8px;
-    }
-    @keyframes fadeInText { to { opacity: 1; } }
-  </style>
+<meta charset="UTF-8">
+<title>Birthday Wishes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;width:100%;background:#000;overflow:hidden;font-family:'Georgia',serif;color:#fff}
+#tapMessage{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.4em;animation:blink 1s infinite;padding:0 20px;background:#000;z-index:9999}
+@keyframes blink{50%{opacity:0}}
+#balloons,#crackers,#main,#birthdayMsg{display:none}
+.heartBalloon{position:absolute;width:100px;height:100px;clip-path:path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");animation:rise 6s ease-out forwards}
+@keyframes rise{0%{transform:translateY(100vh) scale(1);opacity:1}100%{transform:translateY(-20vh) scale(1.5);opacity:0}}
+.cracker{position:absolute;width:18px;height:18px;background:gold;border-radius:50%;animation:burst 2s ease-out forwards}
+@keyframes burst{0%{transform:scale(0);opacity:1}100%{transform:scale(12);opacity:0}}
+#birthdayMsg{text-align:center;position:absolute;top:35%;width:100%;background:#000;padding:20px;animation:fadeInText 2s ease-in forwards;z-index:10}
+#birthdayMsg p{margin:0}
+#birthdayMsg .headline{font-size:2.5em;color:#fff;font-family:'Great Vibes',cursive}
+#birthdayMsg .subline{font-size:1.2em;font-family:'Georgia',serif;color:#fff;margin-top:8px}
+#main{height:100vh;width:100vw;background:url('brdy.jpeg') no-repeat center -80px;background-size:contain;background-color:#000;position:relative}
+#overlay{background:rgba(0,0,0,0.4);position:absolute;bottom:2%;left:5%;width:90%;text-align:center;border-radius:12px}
+#overlay p{font-size:.88em;line-height:1.5em;animation:fadeInText 3s ease-in forwards;opacity:0;max-width:90%;margin:10px auto;padding:0 8px}
+@keyframes fadeInText{to{opacity:1}}
+</style>
 </head>
 <body>
-  <div id="tapMessage">Your Eternal Majesty, let your gentle touch awaken the night—one tap my lady</div>
-  <div id="balloons"></div>
-  <div id="crackers"></div>
-  
-  <div id="birthdayMsg">
-    <p class="headline">Happy Birthday my love</p>
-    <p class="subline">Wishing you a happy, healthy, successful year ahead</p>
-  </div>
+<div id="tapMessage">Your Eternal Majesty, let your gentle touch awaken the night—one tap my lady</div>
+<div id="balloons"></div>
+<div id="crackers"></div>
 
-  <div id="main">
-    <div id="overlay">
-      <p>
-        You feel like the prayer I never spoke, fulfilled in its purest form. The finest gift existence can offer is simply you—your presence that turns time itself into meaning. I often look into the air and wonder what force I should thank for having you. With you, even thankfulness feels small, because words collapse under the truth of what you mean to me. To have you is to know that existence can be more than survival—it can be grace, it can be wonder, it can be joy beyond measure.
-        <br><br>
-        And in that joy, I can say with certainty: no emperor, no saint, no sage in all of history has ever conquered the kind of richness I feel in your presence.
-      </p>
-    </div>
-  </div>
+<div id="birthdayMsg">
+<p class="headline">Happy Birthday my love</p>
+<p class="subline">Wishing you a happy, healthy, successful year ahead</p>
+</div>
 
-  <audio id="bgm" src="bgm.mp3" loop></audio>
-  <audio id="popSound" src="pop.mp3.mp3"></audio>
-  <audio id="crackerSound" src="cracker.mp3.mp3"></audio>
+<div id="main">
+<div id="overlay">
+<p>
+You feel like the prayer I never spoke, fulfilled in its purest form. The finest gift existence can offer is simply you—your presence that turns time itself into meaning. I often look into the air and wonder what force I should thank for having you. With you, even thankfulness feels small, because words collapse under the truth of what you mean to me. To have you is to know that existence can be more than survival—it can be grace, it can be wonder, it can be joy beyond measure.
+<br><br>
+And in that joy, I can say with certainty: no emperor, no saint, no sage in all of history has ever conquered the kind of richness I feel in your presence.
+</p>
+</div>
+</div>
 
-  <script>
-    let started = false;
-    let soundsAllowed = true;
+<audio id="bgm" src="bgm.mp3" loop></audio>
+<audio id="popSound" src="pop.mp3.mp3"></audio>
+<audio id="crackerSound" src="cracker.mp3.mp3"></audio>
 
-    function playClone(id) {
-      if (!soundsAllowed) return;
-      const original = document.getElementById(id);
-      const clone = original.cloneNode();
-      document.body.appendChild(clone);
-      clone.play().catch(()=>{});
-      setTimeout(() => clone.remove(), 1000);
-    }
+<script>
+document.body.addEventListener('click',()=>{
+document.getElementById('tapMessage').style.display='none';
+document.documentElement.requestFullscreen();
+const B=document.getElementById('balloons');
+const C=document.getElementById('crackers');
+B.style.display=C.style.display='block';
 
-    function startShow() {
-      if (started) return;
-      started = true;
-      
-      document.documentElement.requestFullscreen().catch(()=>{});
-      document.getElementById('tapMessage').style.display = 'none';
+for(let i=0;i<24;i++){
+const b=document.createElement('div');
+b.className='heartBalloon';
+b.style.left=Math.random()*100+'vw';
+b.style.top=Math.random()*100+'vh';
+b.style.background=['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%2];
+B.appendChild(b);
+setTimeout(()=>document.getElementById('popSound').play(),i*250);
+}
 
-      const balloonContainer = document.getElementById('balloons');
-      const crackerContainer = document.getElementById('crackers');
-      balloonContainer.style.display = 'block';
-      crackerContainer.style.display = 'block';
+for(let i=0;i<12;i++){
+const c=document.createElement('div');
+c.className='cracker';
+c.style.left=Math.random()*100+'vw';
+c.style.top=Math.random()*100+'vh';
+C.appendChild(c);
+setTimeout(()=>document.getElementById('crackerSound').play(),i*400);
+}
 
-      for (let i = 0; i < 24; i++) {
-        const b = document.createElement('div');
-        b.className = 'heartBalloon';
-        b.style.left = Math.random() * 100 + 'vw';
-        b.style.top = Math.random() * 100 + 'vh';
-        b.style.background = ['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%4];
-        balloonContainer.appendChild(b);
-
-        if (i % 2 === 0) {
-          setTimeout(() => playClone('popSound'), i * 230);
-        }
-      }
-
-      for (let i = 0; i < 12; i++) {
-        const c = document.createElement('div');
-        c.className = 'cracker';
-        c.style.left = Math.random() * 100 + 'vw';
-        c.style.top = Math.random() * 100 + 'vh';
-        crackerContainer.appendChild(c);
-
-        setTimeout(() => playClone('crackerSound'), i * 360);
-      }
-
-      setTimeout(() => {
-        balloonContainer.innerHTML = '';
-        crackerContainer.innerHTML = '';
-        document.getElementById('birthdayMsg').style.display = 'block';
-      }, 8000);
-
-      setTimeout(() => {
-        soundsAllowed = false;
-        document.getElementById('birthdayMsg').style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-        const bgm = document.getElementById('bgm');
-        bgm.volume = 1.0;
-        bgm.play().catch(()=>{});
-      }, 11000);
-
-      setTimeout(() => {
-        document.exitFullscreen();
-      }, 61000);
-    }
-
-    document.getElementById('tapMessage').addEventListener('click', startShow, {once: true});
-    document.getElementById('tapMessage').addEventListener('touchstart', startShow, {once: true});
-  </script>
+setTimeout(()=>{B.innerHTML='';C.innerHTML='';document.getElementById('birthdayMsg').style.display='block';},8000);
+setTimeout(()=>{document.getElementById('birthdayMsg').style.display='none';document.getElementById('main').style.display='block';document.getElementById('bgm').play();},11000);
+setTimeout(()=>{document.exitFullscreen();},61000);
+});
+</script>
 </body>
 </html>
