@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;height:100%;width:100%;background:#000;overflow:hidden;font-family:'Georgia',serif;color:#fff;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;width:100%;background:#000;overflow:hidden;font-family:'Georgia',serif;color:#fff;-webkit-tap-highlight-color:transparent;box-sizing:border-box;touch-action:manipulation}
 #tapMessage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.4em;animation:blink 1s infinite;padding:20px;background:#000;z-index:999;cursor:pointer;user-select:none;box-sizing:border-box}
 @keyframes blink{50%{opacity:0}}
 #balloons,#crackers,#main,#birthdayMsg{display:none}
@@ -61,7 +61,8 @@ clone.play().catch(()=>{});
 setTimeout(()=>clone.remove(),1200);
 }
 
-function runShow(){
+function runShow(e){
+e.preventDefault();
 if(started)return;
 started=true;
 document.getElementById('tapMessage').style.display='none';
@@ -105,3 +106,18 @@ setTimeout(()=>{
 document.getElementById('birthdayMsg').style.display='none';
 document.getElementById('main').style.display='block';
 const bgm=document.getElementById('bgm');
+bgm.volume=1;
+bgm.play().catch(()=>{});
+},11000);
+
+// exit fullscreen at 61s
+setTimeout(()=>{
+document.exitFullscreen().catch(()=>{});
+},61000);
+}
+
+// Single tap listener only - works for touch + click
+document.getElementById('tapMessage').addEventListener('click', runShow, {once:true});
+</script>
+</body>
+</html>
