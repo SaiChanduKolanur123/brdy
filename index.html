@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Birthday Wishes</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Georgia&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;height:100%;width:100%;background:#000;overflow:hidden;font-family:'Georgia',serif;color:#fff;-webkit-tap-highlight-color:transparent;touch-action:none}
-#tapMessage{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.35em;animation:blink 1s infinite;padding:20px;background:#000;z-index:9999;cursor:pointer}
+html,body{margin:0;padding:0;height:100%;width:100%;background:#000;overflow:hidden;font-family:'Georgia',serif;color:#fff}
+#tapMessage{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.4em;animation:blink 1s infinite;padding:0 20px;background:#000;z-index:9999}
 @keyframes blink{50%{opacity:0}}
 #balloons,#crackers,#main,#birthdayMsg{display:none}
-.heartBalloon{position:absolute;width:96px;height:96px;clip-path:path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");animation:rise 6s ease-out forwards}
+.heartBalloon{position:absolute;width:100px;height:100px;clip-path:path("M24 4C12 -4 0 6 0 18c0 12 24 28 24 28s24-16 24-28C48 6 36 -4 24 4z");animation:rise 6s ease-out forwards}
 @keyframes rise{0%{transform:translateY(100vh) scale(1);opacity:1}100%{transform:translateY(-20vh) scale(1.5);opacity:0}}
-.cracker{position:absolute;width:16px;height:16px;background:gold;border-radius:50%;animation:burst 2s ease-out forwards}
+.cracker{position:absolute;width:18px;height:18px;background:gold;border-radius:50%;animation:burst 2s ease-out forwards}
 @keyframes burst{0%{transform:scale(0);opacity:1}100%{transform:scale(12);opacity:0}}
-#birthdayMsg{text-align:center;position:absolute;top:28%;left:50%;transform:translateX(-50%);width:90%;max-width:340px;background:#000;padding:18px 14px;animation:fadeInText 2s ease-in forwards;z-index:10;word-break:break-word}
+#birthdayMsg{text-align:center;position:absolute;top:35%;width:100%;background:#000;padding:20px;animation:fadeInText 2s ease-in forwards;z-index:10}
 #birthdayMsg p{margin:0}
-#birthdayMsg .headline{font-size:2em;color:#fff;font-family:'Great Vibes',cursive;line-height:1.25}
-#birthdayMsg .subline{font-size:1em;font-family:'Georgia',serif;color:#fff;margin-top:6px;line-height:1.45}
+#birthdayMsg .headline{font-size:2.5em;color:#fff;font-family:'Great Vibes',cursive}
+#birthdayMsg .subline{font-size:1.2em;font-family:'Georgia',serif;color:#fff;margin-top:8px}
 #main{height:100vh;width:100vw;background:url('brdy.jpeg') no-repeat center -80px;background-size:contain;background-color:#000;position:relative}
-#overlay{background:rgba(0,0,0,0.45);position:absolute;bottom:2%;left:50%;transform:translateX(-50%);width:90%;max-width:340px;text-align:center;border-radius:12px;pointer-events:none;padding:10px 12px}
-#overlay p{font-size:0.83em;line-height:1.5em;animation:fadeInText 3s ease-in forwards;opacity:0;margin:5px auto;padding:0;word-break:break-word}
+#overlay{background:rgba(0,0,0,0.4);position:absolute;bottom:2%;left:5%;width:90%;text-align:center;border-radius:12px}
+#overlay p{font-size:.88em;line-height:1.5em;animation:fadeInText 3s ease-in forwards;opacity:0;max-width:90%;margin:10px auto;padding:0 8px}
 @keyframes fadeInText{to{opacity:1}}
 </style>
 </head>
@@ -44,87 +44,41 @@ And in that joy, I can say with certainty: no emperor, no saint, no sage in all 
 </div>
 </div>
 
-<audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
-<audio id="popSound" src="pop.mp3.mp3" preload="auto"></audio>
-<audio id="crackerSound" src="cracker.mp3.mp3" preload="auto"></audio>
+<audio id="bgm" src="bgm.mp3" loop></audio>
+<audio id="popSound" src="pop.mp3.mp3"></audio>
+<audio id="crackerSound" src="cracker.mp3.mp3"></audio>
 
 <script>
-let started=false, soundsAllowed=true;
-
-function playSound(id){
-if(!soundsAllowed) return;
-const el=document.getElementById(id);
-if(!el) return;
-const s=el.cloneNode();
-s.volume=1;
-document.body.appendChild(s);
-s.play().catch(()=>{});
-setTimeout(()=>s.remove(),800);
-}
-
-function runShow(e){
-e.preventDefault();
-if(started) return;
-started=true;
-
+document.body.addEventListener('click',()=>{
 document.getElementById('tapMessage').style.display='none';
-
-// Fullscreen - simple, like before + iPhone support
-const docEl=document.documentElement;
-if(docEl.requestFullscreen) docEl.requestFullscreen();
-else if(docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
-
+document.documentElement.requestFullscreen();
 const B=document.getElementById('balloons');
 const C=document.getElementById('crackers');
-B.style.display='block';
-C.style.display='block';
+B.style.display=C.style.display='block';
 
-// Balloons like before
 for(let i=0;i<24;i++){
 const b=document.createElement('div');
 b.className='heartBalloon';
 b.style.left=Math.random()*100+'vw';
-b.style.top='100vh';
-b.style.background=['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%4];
+b.style.top=Math.random()*100+'vh';
+b.style.background=['#ff4d6d','#ffd166','#c77dff','#06ffa5'][i%2];
 B.appendChild(b);
-if(i%2===0) setTimeout(()=>playSound('popSound'), i*220);
+setTimeout(()=>document.getElementById('popSound').play(),i*250);
 }
 
-// Crackers like before
 for(let i=0;i<12;i++){
-setTimeout(()=>{
 const c=document.createElement('div');
 c.className='cracker';
 c.style.left=Math.random()*100+'vw';
 c.style.top=Math.random()*100+'vh';
 C.appendChild(c);
-setTimeout(()=>playSound('crackerSound'), i*350);
-},3000+i*50);
+setTimeout(()=>document.getElementById('crackerSound').play(),i*400);
 }
 
-// 8s: Stop sounds + show text
-setTimeout(()=>{
-soundsAllowed=false;
-B.innerHTML='';
-C.innerHTML='';
-document.getElementById('birthdayMsg').style.display='block';
-},8000);
-
-// 11s: Photo + music
-setTimeout(()=>{
-document.getElementById('birthdayMsg').style.display='none';
-document.getElementById('main').style.display='block';
-document.getElementById('bgm').play().catch(()=>{});
-},11000);
-
-// 61s: Exit fullscreen
-setTimeout(()=>{
-if(document.exitFullscreen) document.exitFullscreen();
-else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-},61000);
-}
-
-document.getElementById('tapMessage').addEventListener('pointerdown', runShow, {once:true});
+setTimeout(()=>{B.innerHTML='';C.innerHTML='';document.getElementById('birthdayMsg').style.display='block';},8000);
+setTimeout(()=>{document.getElementById('birthdayMsg').style.display='none';document.getElementById('main').style.display='block';document.getElementById('bgm').play();},11000);
+setTimeout(()=>{document.exitFullscreen();},61000);
+});
 </script>
 </body>
 </html>
